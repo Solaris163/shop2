@@ -1,0 +1,65 @@
+<h1 style="margin-left: 30px">Заказы (I вариант)</h1>
+
+{% if admin %}
+
+    Это старый вариант отображения заказов. Он не видит товары в новых заказах, которые попадают в таблицу sold_products.
+    Он видит только товары, находящиеся в таблице orders в столбце products в виде json строки.
+    Рука не поднялась удалить его, столько времени было затрачено, но потом все равно удалю.<br><br>
+
+    {% for order in orders %}
+        <div class="order">
+            <div class="order_control">
+                <span>Заказ номер {{ order['id'] }}</span>
+                <span>Статус заказа: <span>{{ order['status'] }}</span></span>
+                <span>поменять статус:
+                    <a href="/order2/set_paid/?id={{ order['id'] }}"><button class="order_button">оплачено</button></a>
+                    <a href="/order2/set_send/?id={{ order['id'] }}"><button class="order_button">отправлено</button></a>
+                    <a href="/order2/set_received/?id={{ order['id'] }}"><button class="order_button">получено</button></a>
+                </span>
+            </div>
+            <div class="order_body">
+                <div class="order_info">
+                    логин:
+                    {% if (order['user']) %} {#проверка сущетвует ли логин#}
+                        {{ order['user'] }}<br> {#если сущетвует то пишется логин#}
+                    {% else %}
+                        не авторизован<br> {#иначе пишется, что пользователь сделавший заказ не авторизован#}
+                    {% endif %}
+                    сессия:
+                    {% if (order['session']) %} {#проверка сущетвует ли сесия#}
+                        {{ order['session'] }}<br> {#если сущетвует то пишется сессия#}
+                    {% else %}
+                        пользователь авторизован<br> {#иначе пишется, что пользователь сделавший заказ авторизован#}
+                    {% endif %}
+                    имя: {{ order['name'] }}<br>
+                    телефон: {{ order['phone'] }}<br>
+                </div>
+                <div class="order_products">
+                    <table border="1" cellspacing="0" style="text-align: center">
+                        <tr>
+                            <td>id товара</td>
+                            <td>Наименование товара</td>
+                            <td>Цена</td>
+                            <td>Количество</td>
+                        </tr>
+                        {% for product in order['products'] %}
+                            <tr>
+                                <td>{{ product['id'] }}</td>
+                                <td>{{ product['name'] }}</td>
+                                <td>{{ product['price'] }}</td>
+                                <td>1</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+    <br>
+
+{% else %}
+    <h2>Вы не админ, а заказы доступны только админу</h2>
+    <h3>Для просмотра заказов авторизуйтесь как админ: логин admin пароль 123</h3>
+
+{% endif %}

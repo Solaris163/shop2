@@ -1,0 +1,25 @@
+<h1>Корзина</h1>
+
+{% set i = 0 %}
+{% for product in cart %}
+    {% set i = i + 1 %}
+    <div style="display: flex; align-items: center;">
+        <div class="cart_number">{{ i }}</div>
+        <div class="cart_item" >
+            <img class="cart_img" src="/img/{{ product['img'] }}.jpg" alt="рисунок" height="100px">
+            <div style="width: 400px; margin-left: 20px">
+                {{ product['name'] }}<br>
+                цена: {{ product['price'] }} <br>
+                колличество: {{ product['quantity'] }}
+                <form action="/cart/deleteFromCart/">
+                    <p><input type="hidden" name="id" value="{{ product['id'] }}"></p>
+                    <p><input type="submit" value="Удалить из корзины"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endfor %}
+<form class="cart_checkout" action="/checkout/" method="post">
+    <input type="submit" value="Оформить заказ">
+</form>

@@ -1,0 +1,46 @@
+<div style="display: flex; flex-wrap: wrap;">
+    {% for product in catalog %}
+        <div class="catalog_item">
+            <div class="flex_photo">
+                <a class="catalog_photo" href="/product/card/?id={{ product['id'] }}">
+                    <img src="/img/{{ product['img'] }}.jpg" alt="изображение товара" height="260px">
+                </a><br>
+            </div>
+
+            <a href="/product/card/?id={{ product['id'] }}">
+                {{ product['name'] }}
+            </a><br>
+            {{ product['description'] }}<br>
+            Цена: {{ product['price'] }}<br>
+            <form action="/cart/addToCart/">
+                <p><input type="hidden" name="id" value="{{ product['id'] }}"></p>
+                <p><input type="submit" value="Купить"></p>
+            </form>
+
+            <button class="action" data-id="{{ product['id'] }}">Купить асинхронно</button>
+        </div>
+    {% endfor %}
+
+    <script>
+        $(document).ready(function() {
+            $(".action").on('click', function(event) {
+                let id = $(event.target).attr("data-id");
+                $.ajax({
+                    url: "cart/addToCartAsinc",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        id: id
+                    },
+                    error: function() {alert('error');},
+                    success: function(answwer) {
+                        alert('товар обавлен в корзину');
+                        {window.location.reload()}
+                    }
+                })
+            });
+        });
+    </script>
+
+</div>
+

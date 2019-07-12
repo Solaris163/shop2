@@ -1,0 +1,14 @@
+<div style="width: 450px; padding: 20px; margin: 0 auto">
+
+    <img src="/img/{{ product['img'] }}.jpg" alt="изображение товара" height="350px">
+
+    <h4>{{ product['name'] }}</h4>
+
+    <p>{{ product['description'] }}</p>
+    <p>Цена: {{ product['price'] }} р.</p>
+
+    <form action="/cart/addToCart/">
+        <p><input type="hidden" name="id" value="{{ product['id'] }}"></p>
+        <p><input type="submit" value="Купить"></p>
+    </form>
+</div>
